@@ -14,7 +14,10 @@ cl_lm='\e[95m'
 cl_lg='\e[92m'
 
 
-if [ ! -z "$nameserver" ]; then
+if [ -z "$nameserver" ]; then
+    nameserver="1.1.1.1"
+    echo "Nameserver is setted to \"$nameserver\""
+else
     if [[ "$nameserver" =~ $ip_regex ]] || [[ "$nameserver" =~ $ip6_regex ]]; then
         echo "Nameserver is setted to \"$nameserver\""
     else
