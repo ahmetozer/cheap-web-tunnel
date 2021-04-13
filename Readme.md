@@ -53,3 +53,5 @@ iptables -t nat -A PREROUTING -i eth0 -s 192.168.2.96 -p tcp  --dport 80 -j DNAT
 iptables -t nat -A PREROUTING -i eth0 -p tcp  --dport 443 -j DNAT --to-destination 198.51.100.54:8443
 iptables -t nat -A PREROUTING -i eth0 -p tcp  --dport 80 -j DNAT --to-destination 198.51.100.54:8443
 ```
+
+**NOTE:** Firewall rule does not affect established sockets. After reconnection to Wi-Fi new sockets are forwarded to relay server.
