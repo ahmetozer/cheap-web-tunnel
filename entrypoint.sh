@@ -13,7 +13,6 @@ cl_wh='\e[97m'
 cl_lm='\e[95m'
 cl_lg='\e[92m'
 
-
 if [ -z "$nameserver" ]; then
     nameserver="1.1.1.1"
     echo "Nameserver is setted to \"$nameserver\""
@@ -26,8 +25,15 @@ else
     fi
 fi
 
-
-
+if [ ! -z "$resolver_valid" ]; then
+    if [[ "$resolver_valid" =~ [[:digit:]] ]]; then
+        echo "DNS cache is setted to \"${resolver_valid}s\""
+        resolver_valid="valid=${resolver_valid}s"
+    else
+        echo -e "${cl_red}resolver_valid is must be a number. \"${resolver_valid}\"${cl_nc}"
+        exit 1
+    fi
+fi
 
 port=${port-"443"}
 

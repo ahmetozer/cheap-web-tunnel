@@ -16,7 +16,7 @@ events {
 http {
 EOF
 if [ ! -z "$nameserver" ]; then
-    echo -e "\tresolver $nameserver;" >> /etc/nginx/nginx.conf
+    echo -e "\tresolver $nameserver ${resolver_valid};" >> /etc/nginx/nginx.conf
 fi
 cat <<\EOF >> /etc/nginx/nginx.conf
     include /etc/nginx/mime.types;
@@ -38,7 +38,8 @@ cat <<\EOF >> /etc/nginx/nginx.conf
         listen unix:/tmp/http.socket default_server;
         # Everything it can be proxied service
         location / {
-            proxy_pass http://$host;
+            proxy_pass http://$http_host;
+            proxy_set_header Host $http_host;
         }
     }
 }
@@ -69,7 +70,7 @@ EOF
 echo -e "\tlisten ${port} reuseport so_keepalive=on;" >> /etc/nginx/nginx.conf
 
 if [ ! -z "$nameserver" ]; then
-    echo -e "\tresolver $nameserver;" >> /etc/nginx/nginx.conf
+    echo -e "\tresolver $nameserver ${resolver_valid};" >> /etc/nginx/nginx.conf
 fi
 cat <<\EOF >>       /etc/nginx/nginx.conf
         proxy_connect_timeout 1s;
