@@ -35,7 +35,7 @@ if [ ! -z "$resolver_valid" ]; then
     fi
 fi
 
-port=${port-"443"}
+port=${port-"8443"}
 
 if [[ "$port" =~ $port_regex ]]; then
     if (lsof -i :$port | grep TCP); then
@@ -47,6 +47,19 @@ if [[ "$port" =~ $port_regex ]]; then
 else
     echo -e "${cl_red}Port is must be between 0-65535${cl_nc}"
     exit 1
+fi
+
+if [ ! -z "$client_addr" ]; then
+    if [[ "$client_addr" =~ $ip_regex ]] || [[ "$client_addr" =~ $ip6_regex ]]; then
+        echo "Client addr is setted to \"$client_addr\" other requests will be deny"
+        config_nginx_client_addr="
+        allow $client_addr;
+        deny all;
+    "
+    else
+        echo -e "${cl_red}Client addr must be IPv4 or IPv6 address \"$client_addr\"${cl_nc}"
+        exit 1
+    fi
 fi
 
 source nginx/nginx.conf.sh

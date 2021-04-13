@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Creating nginx.conf"
-cat <<\EOF > /etc/nginx/nginx.conf
+cat <<\EOF >/etc/nginx/nginx.conf
 #user nginx;
 daemon off;
 worker_processes auto;
@@ -16,9 +16,9 @@ events {
 http {
 EOF
 if [ ! -z "$nameserver" ]; then
-    echo -e "\tresolver $nameserver ${resolver_valid};" >> /etc/nginx/nginx.conf
+    echo -e "\tresolver $nameserver ${resolver_valid};" >>/etc/nginx/nginx.conf
 fi
-cat <<\EOF >> /etc/nginx/nginx.conf
+cat <<\EOF >>/etc/nginx/nginx.conf
     include /etc/nginx/mime.types;
     default_type application/octet-stream;
     server_tokens off;
@@ -67,12 +67,12 @@ stream {
 
     server {
 EOF
-echo -e "\tlisten ${port} reuseport so_keepalive=on;" >> /etc/nginx/nginx.conf
+echo -e "\tlisten ${port} reuseport so_keepalive=on;" >>/etc/nginx/nginx.conf
 
 if [ ! -z "$nameserver" ]; then
-    echo -e "\tresolver $nameserver ${resolver_valid};" >> /etc/nginx/nginx.conf
+    echo -e "\tresolver $nameserver ${resolver_valid};" >>/etc/nginx/nginx.conf
 fi
-cat <<\EOF >>       /etc/nginx/nginx.conf
+cat <<\EOF >>/etc/nginx/nginx.conf
         proxy_connect_timeout 1s;
         proxy_timeout 300m;
         preread_timeout 10m;
@@ -80,5 +80,7 @@ cat <<\EOF >>       /etc/nginx/nginx.conf
         proxy_pass $upstream_hs;
         ssl_preread on;
     }
-}
 EOF
+echo "$config_nginx_client_addr
+}
+" >>/etc/nginx/nginx.conf

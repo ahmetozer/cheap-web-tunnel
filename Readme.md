@@ -28,10 +28,13 @@ Replace DNS TTL value
 - port  
 Service listen port. It is good to use for native IPv6 or docker host network.
 
+- client_addr
+To allow only one ip address and block other addresses.
+
 ### Example Run
 
 ```bash
-docker run -it --rm -p 8443:443 ghcr.io/ahmetozer/cheap-web-tunnel:latest
+docker run -it --rm -p 8443:8443 ghcr.io/ahmetozer/cheap-web-tunnel:latest
 ```
 
 ## Client Side
