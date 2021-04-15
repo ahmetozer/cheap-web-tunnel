@@ -19,6 +19,9 @@ if [ -z "$nameserver" ]; then
 else
     if [[ "$nameserver" =~ $ip_regex ]] || [[ "$nameserver" =~ $ip6_regex ]]; then
         echo "Nameserver is setted to \"$nameserver\""
+        if [[ "$nameserver" =~ $ip6_regex ]]; then
+            nameserver="[$nameserver]"
+        fi
     else
         echo -e "${cl_red}Nameserver is must be IPv4 or IPv6 address \"$nameserver\"${cl_nc}"
         exit 1
